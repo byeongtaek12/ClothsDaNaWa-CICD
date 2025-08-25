@@ -9,7 +9,7 @@
 ## 역할 분담
 
 **오병택**<br>
-유저 도메인, 인증 인가(security + jwt + oauth), 예외처리<br>
+유저 도메인, 인증 인가(security + jwt + oauth), 예외처리, CI/CD(고도화) <br>
 
 **박주형**<br>
 쇼핑몰 도메인, AWS CI/CD<br>
