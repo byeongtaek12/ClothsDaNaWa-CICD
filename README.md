@@ -54,17 +54,17 @@
 
 ## ERD
 
-![erd.PNG](erd.PNG)
+![erd.PNG](image/erd.PNG)
 <br>
 
 ## 와이어 프레임
 
-![와이어프레임.webp](%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84.webp)
+![와이어프레임.webp](image/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84.webp)
 <br>
 
 ## API 명세서
 
-![api.PNG](api.PNG)
+![api.PNG](image/api.PNG)
 <br>
 
 
