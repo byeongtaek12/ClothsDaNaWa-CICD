@@ -1,10 +1,10 @@
-<<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <title></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/signup.css" rel="stylesheet" />
   </head>
   <body>
     <div class="signup-card">
@@ -14,6 +14,7 @@
           <input
             class="form-input"
             id="name"
+            name="name"
             type="text"
             placeholder="이름 입력"
             required
@@ -24,6 +25,7 @@
           <input
             class="form-input"
             id="email"
+            name="email"
             type="email"
             placeholder="이메일 입력"
             required
@@ -34,6 +36,7 @@
           <input
             class="form-input"
             id="password"
+            name="password"
             type="password"
             placeholder="패스워드 입력"
             required
@@ -44,14 +47,15 @@
           <input
             class="form-input"
             id="address"
+            name="address"
             type="text"
             placeholder="주소 입력"
             required
           />
         </div>
         <div class="form-group">
-          <label class="form-label" for="role">role</label>
-          <select id="role" class="form-select">
+          <label class="form-label" for="userRole">role</label>
+          <select id="userRole" name="userRole" class="form-select" required>
             <option selected disabled>선택하세요</option>
             <option value="USER">USER</option>
             <option value="OWNER">OWNER</option>
