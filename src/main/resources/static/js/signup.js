@@ -40,7 +40,7 @@ function validateSignupData(signupData) {
 }
 
 async function submitSignupData(signupData) {
-  const response = await fetch("http://localhost:8080/auth/signup", {
+  const response = await fetch("/auth/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
