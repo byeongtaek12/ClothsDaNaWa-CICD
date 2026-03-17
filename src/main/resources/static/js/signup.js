@@ -21,6 +21,12 @@ function validateSignupData(signupData) {
     return false;
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(signupData.email)) {
+    alert("올바른 이메일 형식을 입력해주세요.");
+    return false;
+  }
+
   if (!signupData.password.trim()) {
     alert("비밀번호를 입력해주세요.");
     return false;
@@ -31,7 +37,11 @@ function validateSignupData(signupData) {
     return false;
   }
 
-  if (!signupData.userRole) {
+  const validRoles = ["USER", "OWNER", "ADMIN"];
+  if (
+    !signupData.userRole ||
+    !validRoles.includes(signupData.userRole.toUpperCase())
+  ) {
     alert("권한을 선택해주세요.");
     return false;
   }
@@ -49,7 +59,9 @@ async function submitSignupData(signupData) {
   });
 
   if (!response.ok) {
-    throw new Error("회원가입 요청 실패");
+    const errorData = await response.json().catch(() => null);
+    const message = errorData?.message || "회원가입 요청 실패";
+    throw new Error(message);
   }
 
   return response.json();
@@ -70,6 +82,6 @@ signupForm.addEventListener("submit", async function (event) {
     alert("회원가입이 완료됐습니다.");
   } catch (error) {
     console.error("회원가입 실패", error);
-    alert("회원가입이 실패하였습니다.");
+    alert(`회원가입이 실패하였습니다: ${error.message}`);
   }
 });
