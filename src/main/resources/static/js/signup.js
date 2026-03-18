@@ -41,7 +41,7 @@ function validateSignupData(signupData) {
     return false;
   }
 
-  const validRoles = ["USER", "OWNER", "ADMIN"];
+  const validRoles = ["USER", "OWNER"];
   if (
     !signupData.userRole ||
     !validRoles.includes(signupData.userRole.toUpperCase())
