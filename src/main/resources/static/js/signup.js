@@ -1,4 +1,8 @@
 const signupForm = document.getElementById("signup-form");
+if (!signupForm) {
+  console.error("signupForm 요소를 찾을 수 없습니다");
+  throw new Error("signup-form not found");
+}
 
 function getSignupFormData() {
   return {
