@@ -68,7 +68,11 @@ async function submitSignupData(signupData) {
     throw new Error(message);
   }
 
-  return response.json();
+  const data = await response.json().catch(() => null);
+  if (!data) {
+    throw new Error("서버 응답 파싱 실패");
+  }
+  return data;
 }
 
 signupForm.addEventListener("submit", async function (event) {
