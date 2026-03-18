@@ -17,4 +17,10 @@ public class AuthResponseDto {
 			.jwtToken(jwtToken)
 			.build();
 	}
+
+	public static AuthResponseDto from(User user) {
+		return AuthResponseDto.builder()
+			.id(user.getUserId())
+			.build();
+	}
 }
