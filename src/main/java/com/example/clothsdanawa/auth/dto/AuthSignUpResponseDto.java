@@ -15,4 +15,10 @@ public class AuthSignUpResponseDto {
 			.id(user.getUserId())
 			.build();
 	}
+
+	public static AuthSignUpResponseDto of(Long id) {
+		return AuthSignUpResponseDto.builder()
+			.id(id)
+			.build();
+	}
 }
