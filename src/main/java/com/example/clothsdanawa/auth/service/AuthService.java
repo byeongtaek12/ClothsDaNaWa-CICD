@@ -1,6 +1,5 @@
 package com.example.clothsdanawa.auth.service;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +33,7 @@ public class AuthService {
 
 		User user = User.of(authSignUpRequestDto, encodedPassword);
 
-		User savedUser;
-		try {
-			savedUser = userRepository.save(user);
-		} catch (DataIntegrityViolationException e) {
-			throw new BaseException(ErrorCode.CONFLICT_EMAIL);
-		}
+		User savedUser = userRepository.save(user);
 
 		return AuthSignUpResponseDto.from(savedUser);
 	}
