@@ -8,12 +8,14 @@ import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.common.BaseEntity;
 import com.example.clothsdanawa.user.dto.UserUpdateRequestDto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +23,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(
+	name = "users"
+)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,6 +36,7 @@ public class User extends BaseEntity {
 
 	private String name;
 
+	@Column(nullable = false, unique = true)
 	private String email;
 
 	private String password;
