@@ -8,7 +8,6 @@ import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
 import com.example.clothsdanawa.common.BaseEntity;
 import com.example.clothsdanawa.user.dto.UserUpdateRequestDto;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +24,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(
-	name = "users"
+	name = "users",
+	uniqueConstraints = @UniqueConstraint(name = "uk_users_email", columnNames = "email")
 )
 @Getter
 @AllArgsConstructor
@@ -36,7 +37,6 @@ public class User extends BaseEntity {
 
 	private String name;
 
-	@Column(nullable = false, unique = true)
 	private String email;
 
 	private String password;
