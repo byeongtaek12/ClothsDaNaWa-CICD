@@ -14,17 +14,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clothsdanawa.MySQLContainerBaseTest;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
+import com.example.clothsdanawa.common.exception.BaseException;
 import com.example.clothsdanawa.user.repository.UserRepository;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
 public class AuthServiceIntegrationTest extends MySQLContainerBaseTest {
 
 	@Autowired
@@ -46,44 +45,53 @@ public class AuthServiceIntegrationTest extends MySQLContainerBaseTest {
 		List<Throwable> exceptions = Collections.synchronizedList(new ArrayList<>());
 
 		String sameEmail = "test1234@gmail.com";
+		try {
+			for (int i = 0; i < threadCount; i++) {
+				int index = i;
+				executorService.submit(() -> {
+					readyLatch.countDown();
+					try {
+						startLatch.await();
 
-		for (int i = 0; i < threadCount; i++) {
-			int index = i;
-			executorService.submit(() -> {
-				readyLatch.countDown();
-				try {
-					startLatch.await();
+						AuthSignUpRequestDto req =  new AuthSignUpRequestDto(
+							"obt"+ index,
+							sameEmail,
+							"1234",
+							"test주소",
+							"user"
+						);
 
-					AuthSignUpRequestDto req =  new AuthSignUpRequestDto(
-						"obt"+ index,
-						sameEmail,
-						"1234",
-						"test주소",
-						"user"
-					);
+						authService.signup(req);
+						successCount.incrementAndGet();
+					} catch (Throwable e) {
+						exceptions.add(e);
+					} finally {
+						doneLatch.countDown();
+					}
+				});
+			}
 
-					authService.signup(req);
-					successCount.incrementAndGet();
-				} catch (Throwable e) {
-					exceptions.add(e);
-				} finally {
-					doneLatch.countDown();
-				}
-			});
+			readyLatch.await();
+			startLatch.countDown();
+			doneLatch.await();
+
+			long userCount = userRepository.count();
+
+			assertThat(successCount.get()).isEqualTo(1);
+			assertThat(userCount).isEqualTo(1L);
+			assertThat(exceptions).hasSize(threadCount - 1);
+
+			assertThat(exceptions)
+				.allSatisfy(e -> assertThat(e)
+					.isInstanceOfAny(
+						BaseException.class,
+						DataIntegrityViolationException.class
+					));
+		} finally {
+			executorService.shutdown();
+			if (!executorService.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS)) {
+				executorService.shutdownNow();
+			}
 		}
-
-		readyLatch.await();
-		startLatch.countDown();
-		doneLatch.await();
-
-		long userCount = userRepository.count();
-
-		assertThat(successCount.get()).isEqualTo(1);
-		assertThat(userCount).isEqualTo(1L);
-		assertThat(exceptions).hasSize(threadCount - 1);
-
-		executorService.shutdown();
 	}
-
-
 }
