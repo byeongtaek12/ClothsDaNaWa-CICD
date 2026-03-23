@@ -56,8 +56,4 @@ class AuthControllerTest {
 			.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.id").value(1L));
 	}
-
-	@Test
-	void login() {
-	}
 }
