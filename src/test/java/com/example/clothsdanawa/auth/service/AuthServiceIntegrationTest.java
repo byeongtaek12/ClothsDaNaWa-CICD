@@ -31,9 +31,6 @@ public class AuthServiceIntegrationTest extends MySQLContainerBaseTest {
 	private UserRepository userRepository;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Autowired
 	private AuthService authService;
 
 	@Test
