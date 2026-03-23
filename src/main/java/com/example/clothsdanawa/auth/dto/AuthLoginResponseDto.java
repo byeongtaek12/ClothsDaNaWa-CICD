@@ -7,12 +7,12 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class AuthResponseDto {
+public class AuthLoginResponseDto {
 	private Long id;
 	private String jwtToken;
 
-	public static AuthResponseDto of(User user, String jwtToken) {
-		return AuthResponseDto.builder()
+	public static AuthLoginResponseDto of(User user, String jwtToken) {
+		return AuthLoginResponseDto.builder()
 			.id(user.getUserId())
 			.jwtToken(jwtToken)
 			.build();

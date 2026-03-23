@@ -4,8 +4,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.clothsdanawa.auth.dto.AuthLoginRequestDto;
-import com.example.clothsdanawa.auth.dto.AuthResponseDto;
+import com.example.clothsdanawa.auth.dto.AuthLoginResponseDto;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
+import com.example.clothsdanawa.auth.dto.AuthSignUpResponseDto;
 import com.example.clothsdanawa.common.exception.BaseException;
 import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.common.jwt.JwtUtil;
@@ -22,7 +23,7 @@ public class AuthService {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtUtil jwtUtil;
 
-	public AuthResponseDto signup(AuthSignUpRequestDto authSignUpRequestDto) {
+	public AuthSignUpResponseDto signup(AuthSignUpRequestDto authSignUpRequestDto) {
 
 		if (userRepository.existsByEmail(authSignUpRequestDto.getEmail())) {
 			throw new BaseException(ErrorCode.CONFLICT_EMAIL);
@@ -34,13 +35,10 @@ public class AuthService {
 
 		User savedUser = userRepository.save(user);
 
-		String jwtToken = jwtUtil.createToken(savedUser.getUserId(), savedUser.getName(), savedUser.getEmail(),
-			savedUser.getUserRole());
-
-		return AuthResponseDto.of(savedUser, jwtToken);
+		return AuthSignUpResponseDto.from(savedUser);
 	}
 
-	public AuthResponseDto login(AuthLoginRequestDto authLoginRequestDto) {
+	public AuthLoginResponseDto login(AuthLoginRequestDto authLoginRequestDto) {
 
 		User findedUser = userRepository.findByEmailAndDeletedAtIsNullOrElseThrow(authLoginRequestDto.getEmail());
 		if (!passwordEncoder.matches(authLoginRequestDto.getPassword(), findedUser.getPassword())) {
@@ -50,6 +48,6 @@ public class AuthService {
 		String jwtToken = jwtUtil.createToken(findedUser.getUserId(), findedUser.getName(), findedUser.getEmail(),
 			findedUser.getUserRole());
 
-		return AuthResponseDto.of(findedUser, jwtToken);
+		return AuthLoginResponseDto.of(findedUser, jwtToken);
 	}
 }

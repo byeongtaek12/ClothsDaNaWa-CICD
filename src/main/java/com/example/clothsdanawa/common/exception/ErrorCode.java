@@ -22,6 +22,7 @@ public enum ErrorCode {
 	CONFLICT_EMAIL(HttpStatus.CONFLICT, "USER_006", "이미 존재하는 이메일입니다"),
 	FORBIDDEN_NOT_CHANGE(HttpStatus.FORBIDDEN, "USER_007", "OAuth 유저는 비밀번호를 변경할 수 없습니다"),
 	BAD_REQUEST_ADMIN(HttpStatus.BAD_REQUEST, "USER_008", "관리자는 일반 회원가입으로 생성될 수 없습니다"),
+	CONFLICT_USER_DATA(HttpStatus.CONFLICT, "USER_008", "이미 있는 데이터 입니다."),
 
 	// product
 	PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND,"PRODUCT_001", "해당 상품을 찾을 수 없습니다."),

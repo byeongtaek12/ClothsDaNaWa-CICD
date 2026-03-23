@@ -57,6 +57,19 @@ dependencies {
     // JSTL (c:forEach 같은 거)
     implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
     runtimeOnly  'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+
+    // testContainer
+    testImplementation platform("org.testcontainers:testcontainers-bom:1.21.4")
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mysql'
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == "org.testcontainers") {
+            details.useVersion "1.21.4"
+        }
+    }
 }
 
 tasks.named('test') {
