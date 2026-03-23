@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.clothsdanawa.auth.dto.AuthLoginRequestDto;
-import com.example.clothsdanawa.auth.dto.AuthResponseDto;
+import com.example.clothsdanawa.auth.dto.AuthLoginResponseDto;
 import com.example.clothsdanawa.auth.dto.AuthSignUpRequestDto;
+import com.example.clothsdanawa.auth.dto.AuthSignUpResponseDto;
 import com.example.clothsdanawa.auth.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -22,14 +23,14 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<AuthResponseDto> signup(@Valid @RequestBody AuthSignUpRequestDto authSignUpRequestDto) {
+	public ResponseEntity<AuthSignUpResponseDto> signup(@Valid @RequestBody AuthSignUpRequestDto authSignUpRequestDto) {
 
 		return ResponseEntity.status(201).body(authService.signup(authSignUpRequestDto));
 
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<AuthResponseDto> login(@RequestBody AuthLoginRequestDto authLoginRequestDto) {
+	public ResponseEntity<AuthLoginResponseDto> login(@RequestBody AuthLoginRequestDto authLoginRequestDto) {
 
 		return ResponseEntity.status(200).body(authService.login(authLoginRequestDto));
 

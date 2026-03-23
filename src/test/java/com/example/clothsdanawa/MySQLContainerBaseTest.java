@@ -1,0 +1,30 @@
+package com.example.clothsdanawa;
+
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+@Testcontainers
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+public abstract class MySQLContainerBaseTest {
+
+	@Container
+	static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
+			.withDatabaseName("testdb")
+			.withUsername("test")
+			.withPassword("test");
+
+	@DynamicPropertySource
+	static void overrideProps(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url", mysql::getJdbcUrl);
+		registry.add("spring.datasource.username", mysql::getUsername);
+		registry.add("spring.datasource.password", mysql::getPassword);
+		registry.add("spring.datasource.driver-class-name", mysql::getDriverClassName);
+		registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
+	}
+}
