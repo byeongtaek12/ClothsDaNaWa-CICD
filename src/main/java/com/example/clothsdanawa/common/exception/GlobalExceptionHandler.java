@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(EntityNotFoundException.class)
@@ -64,8 +66,10 @@ public class GlobalExceptionHandler {
 				if (constraintName.contains("uk_users_email")) {
 					return conflict(ErrorCode.CONFLICT_EMAIL);
 				}
+				log.warn("Unhandled constraint violation: {}", constraintName);
 			}
 		}
+		log.error("DataIntegrityViolationException without recognizable constraint", e);
 
 		return conflict(ErrorCode.CONFLICT_USER_DATA);
 	}
