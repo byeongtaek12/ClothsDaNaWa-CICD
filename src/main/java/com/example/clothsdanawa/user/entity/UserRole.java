@@ -7,13 +7,19 @@ public enum UserRole {
 	USER, OWNER, ADMIN;
 
 	public static UserRole from(String userRole) {
-		for (UserRole value : UserRole.values()) {
-			if ("ADMIN".equalsIgnoreCase(userRole)) {
-				throw new BaseException(ErrorCode.BAD_REQUEST_ADMIN);
-			}
+		if (userRole == null || userRole.isBlank()) {
+			throw new BaseException(ErrorCode.BAD_REQUEST_USER_ROLE);
+		}
 
-			if (String.valueOf(value).equals(userRole.toUpperCase())) {
-				return UserRole.valueOf(userRole.toUpperCase());
+		String normalized = userRole.trim();
+
+		if ("ADMIN".equalsIgnoreCase(normalized)) {
+			throw new BaseException(ErrorCode.BAD_REQUEST_ADMIN);
+		}
+
+		for (UserRole value : UserRole.values()) {
+			if (value.name().equalsIgnoreCase(normalized)) {
+				return value;
 			}
 		}
 		throw new BaseException(ErrorCode.BAD_REQUEST_USER_ROLE);
