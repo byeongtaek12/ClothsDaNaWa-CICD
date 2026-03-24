@@ -4,13 +4,19 @@ if (!signupForm) {
   throw new Error("signup-form not found");
 }
 
+function getRequiredValue(id) {
+  const el = document.getElementById(id);
+  if (!el) throw new Error(`${id} 요소를 찾을 수 없습니다`);
+  return el.value;
+}
+
 function getSignupFormData() {
   return {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value,
-    address: document.getElementById("address").value,
-    userRole: document.getElementById("userRole").value,
+    name: getRequiredValue("name"),
+    email: getRequiredValue("email"),
+    password: getRequiredValue("password"),
+    address: getRequiredValue("address"),
+    userRole: getRequiredValue("userRole"),
   };
 }
 
