@@ -75,12 +75,19 @@ async function submitSignupData(signupData) {
   return data;
 }
 
+let isSubmitting = false;
 signupForm.addEventListener("submit", async function (event) {
   event.preventDefault();
+  if (isSubmitting) return;
+  isSubmitting = true;
+  const submitBtn = signupForm.querySelector('button[type="submit"]');
+  if (submitBtn) submitBtn.disabled = true;
 
   const signupData = getSignupFormData();
 
   if (!validateSignupData(signupData)) {
+    isSubmitting = false;
+    if (submitBtn) submitBtn.disabled = false;
     return;
   }
 
@@ -92,5 +99,8 @@ signupForm.addEventListener("submit", async function (event) {
   } catch (error) {
     console.error("회원가입 실패", error);
     alert(`회원가입이 실패하였습니다: ${error.message}`);
+  } finally {
+    isSubmitting = false;
+    if (submitBtn) submitBtn.disabled = false;
   }
 });
