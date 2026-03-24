@@ -52,7 +52,7 @@ async function submitLoginData(loginData) {
     throw new Error(message);
   }
 
-  const data = response.json().catch(() => null);
+  const data = await response.json().catch(() => null);
   if (!data) {
     throw new Error("서버 응답 파싱 실패");
   }
