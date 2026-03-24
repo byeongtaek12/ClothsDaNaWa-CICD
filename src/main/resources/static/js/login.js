@@ -6,9 +6,14 @@ if (!loginForm) {
 }
 
 function getLoginFormData() {
+  const emailEl = document.getElementById("email");
+  const passwordEl = document.getElementById("password");
+  if (!emailEl || !passwordEl) {
+    throw new Error("필수 입력 요소를 찾을 수 없습니다");
+  }
   return {
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value,
+    email: emailEl.value,
+    password: passwordEl.value,
   };
 }
 
