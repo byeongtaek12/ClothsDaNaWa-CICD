@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <title>회원가입 화면</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/signup.css" />
+    <script src="../js/signup.js" defer></script>
+  </head>
+  <body>
+    <div class="signup-card">
+      <form class="signup-form" id="signup-form">
+        <div class="form-group">
+          <label class="form-label" for="name">name</label>
+          <input
+            class="form-input"
+            id="name"
+            name="name"
+            type="text"
+            placeholder="name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">email</label>
+          <input
+            class="form-input"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">password</label>
+          <input
+            class="form-input"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="password"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="address">address</label>
+          <input
+            class="form-input"
+            id="address"
+            name="address"
+            type="text"
+            placeholder="address"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="userRole">role</label>
+          <select id="userRole" name="userRole" class="form-select" required>
+            <option selected disabled>선택하세요</option>
+            <option value="USER">USER</option>
+            <option value="OWNER">OWNER</option>
+          </select>
+        </div>
+        <button class="signup-button" id="signup-button" type="submit">
+          Sign Up
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
