@@ -54,3 +54,18 @@ body {
   outline: 2px solid #007bff;
   outline-offset: 2px;
 }
+
+.social-login-btn {
+  border: 1px solid gray;
+  width: fit-content;
+  background: transparent;
+  padding: 3px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.social-login-icon {
+  width: 40px;
+  height: 40px;
+  display: block;
+}

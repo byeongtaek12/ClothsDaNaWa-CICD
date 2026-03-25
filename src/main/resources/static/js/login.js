@@ -81,3 +81,9 @@ loginForm.addEventListener("submit", async function (event) {
     alert(`로그인이 실패하였습니다: ${error.message}`);
   }
 });
+
+const googleLoginBtn = document.getElementById("google-login-btn");
+
+googleLoginBtn.addEventListener("click", () => {
+  window.location.href = "http://localhost:8080/oauth2/authorization/google";
+});
