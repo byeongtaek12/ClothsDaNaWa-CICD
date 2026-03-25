@@ -71,6 +71,10 @@ loginForm.addEventListener("submit", async function (event) {
   try {
     const result = await submitLoginData(loginData);
     console.log("로그인 성공:", result);
+
+    if (result.jwtToken) {
+      localStorage.setItem("accessToken", result.jwtToken);
+    }
     alert("로그인이 완료됐습니다.");
   } catch (error) {
     console.error("로그인 실패", error);
