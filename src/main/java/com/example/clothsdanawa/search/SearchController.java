@@ -24,11 +24,18 @@ public class SearchController {
 
 	@GetMapping
 	public ResponseEntity<List<SearchResponseDto>> keywordSearch(@RequestParam String keyword) {
+		long totalStart = System.currentTimeMillis();
+
 		redisService.incrementCount(keyword);
-		long start = System.currentTimeMillis();
+
+		long searchStart = System.currentTimeMillis();
 		List<SearchResponseDto> searchResponseDtos = searchService.searchAll(keyword);
-		long end = System.currentTimeMillis();
-		System.out.println("search API 실행 시간(ms) = " + (end - start));
+		long searchEnd = System.currentTimeMillis();
+
+		long totalEnd = System.currentTimeMillis();
+
+		System.out.println("searchAll 실행 시간(ms) = " + (searchEnd - searchStart));
+		System.out.println("controller 내부 총 실행 시간(ms) = " + (totalEnd - totalStart));
 
 		return new ResponseEntity<>(searchResponseDtos, HttpStatus.OK);
 	}
