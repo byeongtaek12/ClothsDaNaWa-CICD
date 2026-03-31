@@ -70,7 +70,8 @@ public class DataInitializer implements CommandLineRunner {
 				"서울",
 				"owner"
 				);
-			User user = User.of(req, "encodedPassword");
+			String encoded = passwordEncoder.encode(req.getPassword());
+			User user = User.of(req, encoded);
 			users.add(user);
 		}
 
