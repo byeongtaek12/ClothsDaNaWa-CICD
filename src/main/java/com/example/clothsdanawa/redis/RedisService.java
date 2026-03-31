@@ -28,13 +28,13 @@ public class RedisService {
 		redisTemplate.opsForZSet().incrementScore(TODAY_HOT_KEYWORDS, keyword, 1);
 
 		//해당 키가 없을 경우에만 만료시간
-		if (!redisTemplate.hasKey(TODAY_HOT_KEYWORDS)) {
-			redisTemplate.expire(TODAY_HOT_KEYWORDS, Duration.ofDays(1));
-		}
+		// if (!redisTemplate.hasKey(TODAY_HOT_KEYWORDS)) {
+		// 	redisTemplate.expire(TODAY_HOT_KEYWORDS, Duration.ofDays(1));
+		// }
 
-		Double score = redisTemplate.opsForZSet().score(TODAY_HOT_KEYWORDS, keyword);
-
-		System.out.println(keyword + "의 검색 횟수 :" + score);
+		// Double score = redisTemplate.opsForZSet().score(TODAY_HOT_KEYWORDS, keyword);
+		//
+		// System.out.println(keyword + "의 검색 횟수 :" + score);
 
 	}
 
