@@ -31,7 +31,7 @@ public class DataInitializer implements CommandLineRunner {
 
 	private static final int USER_COUNT = 30;
 	private static final int STORE_COUNT = 100;
-	private static final int PRODUCT_COUNT = 100000;
+	private static final int PRODUCT_COUNT = 500000;
 
 	private final Random random = new Random();
 
