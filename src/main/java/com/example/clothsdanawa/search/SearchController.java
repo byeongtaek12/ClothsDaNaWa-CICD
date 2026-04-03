@@ -2,6 +2,8 @@ package com.example.clothsdanawa.search;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +25,18 @@ public class SearchController {
 	private final SearchService searchService;
 
 	@GetMapping
-	public ResponseEntity<List<SearchResponseDto>> keywordSearch(@RequestParam String keyword) {
+	public ResponseEntity<List<SearchResponseDto>> keywordSearch(
+		@RequestParam String keyword,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
+	) {
 		long totalStart = System.currentTimeMillis();
 
 		redisService.incrementCount(keyword);
 
 		long searchStart = System.currentTimeMillis();
-		List<SearchResponseDto> searchResponseDtos = searchService.searchAll(keyword);
+		Pageable pageRequest = PageRequest.of(page, size);
+		List<SearchResponseDto> searchResponseDtos = searchService.searchAll(keyword, pageRequest);
 		long searchEnd = System.currentTimeMillis();
 
 		long totalEnd = System.currentTimeMillis();

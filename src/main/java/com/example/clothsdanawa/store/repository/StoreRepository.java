@@ -3,17 +3,15 @@ package com.example.clothsdanawa.store.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.example.clothsdanawa.common.exception.BaseException;
 import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.entity.Store;
-import com.example.clothsdanawa.store.entity.StoreStatus;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 	Optional<Store> findByStoreIdAndStoreStatus(Long storeId, StoreStatus storeStatus);
@@ -32,7 +30,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 			.orElseThrow(() -> new BaseException(ErrorCode.STORE_NOT_FOUND));
 	}
 
-	@Query("SELECT s FROM Store s WHERE s.company LIKE %:keyword% AND s.storeStatus = 'OPEN'")
-	List<Store> searchStoreByKeyword(@Param("keyword") String keyword);
+	@Query("SELECT s FROM Store s WHERE s.company LIKE %:keyword% AND s.storeStatus = 'OPEN' order by s.storeId desc ")
+	List<Store> searchTop10StoreByKeywordOrderByIdDesc(@Param("keyword") String keyword, Pageable pageRequest);
 
 }

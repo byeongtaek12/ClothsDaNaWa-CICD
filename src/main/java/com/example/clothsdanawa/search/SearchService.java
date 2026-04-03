@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.clothsdanawa.product.entity.Product;
@@ -24,15 +25,15 @@ public class SearchService {
 	private final ProductRepository productRepository;
 	private final EntityManagerFactory entityManagerFactory;
 
-	public List<SearchResponseDto> searchAll(String keyword) {
+	public List<SearchResponseDto> searchAll(String keyword, Pageable pageRequest) {
 
 		SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
 		Statistics statistics = sessionFactory.getStatistics();
 
 		statistics.clear();
 
-		List<Store> stores = storeRepository.searchStoreByKeyword(keyword);
-		List<Product> products = productRepository.searchProductByKeyword(keyword);
+		List<Store> stores = storeRepository.searchTop10StoreByKeywordOrderByIdDesc(keyword, pageRequest);
+		List<Product> products = productRepository.searchTop10ProductByKeywordOrderByIdDesc(keyword, pageRequest);
 
 		List<SearchResponseDto> result = stores.stream().map(SearchResponseDto::from).collect(Collectors.toList());
 		List<SearchResponseDto> result2 = products.stream().map(SearchResponseDto::from).collect(Collectors.toList());
