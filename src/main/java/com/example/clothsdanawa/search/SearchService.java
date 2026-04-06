@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clothsdanawa.product.entity.Product;
 import com.example.clothsdanawa.product.repository.ProductRepository;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SearchService {
 
 	private final StoreRepository storeRepository;
