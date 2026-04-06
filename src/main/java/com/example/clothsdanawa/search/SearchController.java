@@ -30,20 +30,10 @@ public class SearchController {
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size
 	) {
-		long totalStart = System.currentTimeMillis();
 
 		redisService.incrementCount(keyword);
-
-		long searchStart = System.currentTimeMillis();
 		Pageable pageRequest = PageRequest.of(page, size);
 		List<SearchResponseDto> searchResponseDtos = searchService.searchAll(keyword, pageRequest);
-		long searchEnd = System.currentTimeMillis();
-
-		long totalEnd = System.currentTimeMillis();
-
-		System.out.println("searchAll 실행 시간(ms) = " + (searchEnd - searchStart));
-		System.out.println("controller 내부 총 실행 시간(ms) = " + (totalEnd - totalStart));
-
 		return new ResponseEntity<>(searchResponseDtos, HttpStatus.OK);
 	}
 
