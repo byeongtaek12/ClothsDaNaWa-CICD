@@ -111,6 +111,14 @@ public class ProductController {
 		return new ProductStockResponse(updatedProduct);
 	}
 
-
+	@GetMapping("/search")
+	public ProductResponse getProductByKeyword(
+		@RequestParam String keyword,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size
+	) {
+		Product searchProduct = productService.getProductByKeyword(keyword, page, size);
+		return new ProductResponse(searchProduct);
+	}
 }
 
