@@ -5,11 +5,16 @@ import com.example.clothsdanawa.product.dto.request.ProductStockRequest;
 import com.example.clothsdanawa.product.dto.request.ProductUpdateRequest;
 import com.example.clothsdanawa.product.dto.response.ProductCreateResponse;
 import com.example.clothsdanawa.product.dto.response.ProductResponse;
+import com.example.clothsdanawa.product.dto.response.ProductSliceResponse;
 import com.example.clothsdanawa.product.dto.response.ProductStockResponse;
 import com.example.clothsdanawa.product.dto.response.ProductUpdateResponse;
 import com.example.clothsdanawa.product.entity.Product;
 import com.example.clothsdanawa.product.service.ProductService;
+
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/product")
+@Validated
 public class ProductController {
 
 	private final ProductService productService;
@@ -112,13 +118,12 @@ public class ProductController {
 	}
 
 	@GetMapping("/search")
-	public ProductResponse getProductByKeyword(
-		@RequestParam String keyword,
+	public ProductSliceResponse<ProductResponse> getProductByKeyword(
+		@RequestParam @NotBlank String keyword,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size
 	) {
-		Product searchProduct = productService.getProductByKeyword(keyword, page, size);
-		return new ProductResponse(searchProduct);
+		return productService.getProductByKeyword(keyword, page, size);
 	}
 }
 
