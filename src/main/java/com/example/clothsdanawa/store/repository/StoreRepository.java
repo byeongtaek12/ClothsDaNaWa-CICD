@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,4 +34,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 	@Query("SELECT s FROM Store s WHERE s.company LIKE %:keyword% AND s.storeStatus = 'OPEN' order by s.storeId desc ")
 	List<Store> searchTop10StoreByKeywordOrderByIdDesc(@Param("keyword") String keyword, Pageable pageRequest);
 
+	Slice<Store> findByCompanyContainingAndStoreStatus(String keyword, Pageable pageRequest, StoreStatus storeStatus);
 }
