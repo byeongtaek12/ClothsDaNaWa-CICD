@@ -3,9 +3,7 @@ package com.example.clothsdanawa.store.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -24,8 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.example.clothsdanawa.common.exception.BaseException;
-import com.example.clothsdanawa.product.dto.response.ProductResponse;
-import com.example.clothsdanawa.product.entity.Product;
 import com.example.clothsdanawa.store.dto.response.StoreResponseDto;
 import com.example.clothsdanawa.store.dto.response.StoreSliceResponse;
 import com.example.clothsdanawa.store.entity.Store;
@@ -83,7 +78,8 @@ class StoreServiceTest {
 		String keyword = "빈티지";
 		int page = 0;
 		int size = 10;
-		Pageable pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+		StoreStatus storeStatus = StoreStatus.OPEN;
+		Pageable pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "storeId"));
 
 		List<Store> stores = new ArrayList<>();
 
@@ -110,7 +106,7 @@ class StoreServiceTest {
 
 		Slice<Store> storeSlice = new SliceImpl<>(stores, pageRequest, false);
 
-		given(storeRepository.findByCompanyContaining(keyword, pageRequest)).willReturn(storeSlice);
+		given(storeRepository.findByCompanyContainingAndStoreStatus(keyword, pageRequest, storeStatus)).willReturn(storeSlice);
 
 		//when
 		StoreSliceResponse<StoreResponseDto> response = storeService.getStoreByKeyword(keyword, page, size);

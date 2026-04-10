@@ -83,9 +83,11 @@ public class StoreService {
 
 	public StoreSliceResponse<StoreResponseDto> getStoreByKeyword(String keyword, int page, int size) {
 
-		Pageable pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+		Pageable pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "storeId"));
 
-		Slice<Store> storeSlice = storeRepository.findByCompanyContaining(keyword, pageRequest);
+		StoreStatus storeStatus = StoreStatus.OPEN;
+
+		Slice<Store> storeSlice = storeRepository.findByCompanyContainingAndStoreStatus(keyword, pageRequest, storeStatus);
 
 		List<StoreResponseDto> responseDtoList = storeSlice.getContent().stream()
 			.map(StoreResponseDto::from)

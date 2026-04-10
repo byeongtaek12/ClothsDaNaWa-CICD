@@ -34,5 +34,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 	@Query("SELECT s FROM Store s WHERE s.company LIKE %:keyword% AND s.storeStatus = 'OPEN' order by s.storeId desc ")
 	List<Store> searchTop10StoreByKeywordOrderByIdDesc(@Param("keyword") String keyword, Pageable pageRequest);
 
-	Slice<Store> findByCompanyContaining(String keyword, Pageable pageRequest);
+	Slice<Store> findByCompanyContainingAndStoreStatus(String keyword, Pageable pageRequest, StoreStatus storeStatus);
 }
