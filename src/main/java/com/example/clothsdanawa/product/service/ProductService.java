@@ -3,12 +3,17 @@ package com.example.clothsdanawa.product.service;
 import com.example.clothsdanawa.common.exception.BaseException;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.clothsdanawa.common.exception.ErrorCode;
 import com.example.clothsdanawa.product.dto.request.ProductStockRequest;
 import com.example.clothsdanawa.product.dto.response.ProductResponse;
+import com.example.clothsdanawa.product.dto.response.ProductSliceResponse;
 import com.example.clothsdanawa.product.entity.Product;
 import com.example.clothsdanawa.product.enums.StockOperationType;
 import com.example.clothsdanawa.product.repository.ProductRepository;
@@ -25,6 +30,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductService {
 
 	private final ProductRepository productRepository;
@@ -33,6 +39,7 @@ public class ProductService {
 	/**
 	 * 상품 등록
 	 */
+	@Transactional
 	public Long createProduct(Long storeId, String productName, int price, int stock) {
 		Store store = storeRepository.findById(storeId)
 			.orElseThrow(() -> new BaseException(ErrorCode.STORE_NOT_FOUND));
@@ -109,5 +116,18 @@ public class ProductService {
 		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
 		return new ProductResponse(product);
+	}
+
+	public ProductSliceResponse<ProductResponse> getProductByKeyword(String keyword, int page, int size) {
+
+		Pageable pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+
+		Slice<Product> products = productRepository.findByProductNameContaining(keyword, pageRequest);
+
+		List<ProductResponse> responseList = products.getContent().stream()
+			.map(ProductResponse::new)
+			.toList();
+
+		return new ProductSliceResponse<>(responseList, products.getNumber(), products.getSize(), products.hasNext());
 	}
 }

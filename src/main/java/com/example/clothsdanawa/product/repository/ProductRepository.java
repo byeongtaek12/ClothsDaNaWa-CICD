@@ -3,6 +3,8 @@ package com.example.clothsdanawa.product.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,4 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	@Query("SELECT p FROM Product p Join fetch p.store WHERE p.productName LIKE %:keyword% AND p.deletedAt IS NULL "
 		+ "ORDER BY p.id DESC")
 	List<Product> searchTop10ProductByKeywordOrderByIdDesc(String keyword, Pageable pageRequest);
+
+	@EntityGraph(attributePaths = "store")
+	Slice<Product> findByProductNameContaining(String keyword, Pageable pageRequest);
 }
