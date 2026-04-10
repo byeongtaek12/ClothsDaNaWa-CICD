@@ -95,11 +95,13 @@ public class StoreController {
 	}
 
 	@GetMapping("/search")
-	public StoreSliceResponse<StoreResponseDto> getStoreByKeyword(
+	public ResponseEntity<StoreSliceResponse<StoreResponseDto>> getStoreByKeyword(
 		@RequestParam @NotBlank String keyword,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size
 	) {
-		return storeService.getStoreByKeyword(keyword, page, size);
+
+		StoreSliceResponse<StoreResponseDto> storeByKeyword = storeService.getStoreByKeyword(keyword, page, size);
+		return new ResponseEntity<>(storeByKeyword, HttpStatus.OK);
 	}
 }
