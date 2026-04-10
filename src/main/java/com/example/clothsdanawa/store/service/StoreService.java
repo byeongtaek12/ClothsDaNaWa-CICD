@@ -2,6 +2,10 @@ package com.example.clothsdanawa.store.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +15,7 @@ import com.example.clothsdanawa.store.dto.request.StoreCreateRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreFilterRequestDto;
 import com.example.clothsdanawa.store.dto.request.StoreUpdateRequestDto;
 import com.example.clothsdanawa.store.dto.response.StoreResponseDto;
+import com.example.clothsdanawa.store.dto.response.StoreSliceResponse;
 import com.example.clothsdanawa.store.entity.Store;
 import com.example.clothsdanawa.store.entity.StoreStatus;
 import com.example.clothsdanawa.store.repository.StoreRepository;
@@ -18,6 +23,7 @@ import com.example.clothsdanawa.store.repository.StoreRepositoryQuery;
 import com.example.clothsdanawa.user.entity.User;
 import com.example.clothsdanawa.user.repository.UserRepository;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -73,5 +79,19 @@ public class StoreService {
 			throw new BaseException(ErrorCode.STORE_FORBIDDEN);
 		}
 		store.setStore(storeUpdateRequestDto);
+	}
+
+	public StoreSliceResponse<StoreResponseDto> getStoreByKeyword(String keyword, int page, int size) {
+
+		Pageable pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+
+		Slice<Store> storeSlice = storeRepository.findByCompanyContaining(keyword, pageRequest);
+
+		List<StoreResponseDto> responseDtoList = storeSlice.getContent().stream()
+			.map(StoreResponseDto::from)
+			.toList();
+
+		return new StoreSliceResponse<>(responseDtoList, storeSlice.getNumber(), storeSlice.getSize(),
+			storeSlice.hasNext());
 	}
 }
