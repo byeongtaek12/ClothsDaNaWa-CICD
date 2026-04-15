@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE product SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-@Table(indexes = @Index(name = "idx_product_name", columnList = "name"))
+@Table(indexes = @Index(name = "idx_product_name", columnList = "product_name"))
 public class Product {
 
 	/**
